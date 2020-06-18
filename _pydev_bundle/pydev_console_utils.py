@@ -7,7 +7,7 @@ from _pydev_imps._pydev_saved_modules import thread
 from _pydevd_bundle import pydevd_vars
 from _pydevd_bundle import pydevd_xml
 from _pydevd_bundle.pydevd_constants import (IS_JYTHON, dict_iter_items, NEXT_VALUE_SEPARATOR, Null,
-    get_global_debugger)
+    get_global_debugger, IS_PY2)
 import signal
 from contextlib import contextmanager
 from _pydev_bundle import pydev_log
@@ -20,11 +20,17 @@ except:
     except:
         import io as StringIO
 
+if IS_PY2:
+    _BaseClass = file
+else:
+    import io
+    _BaseClass = io.IOBase
+
 
 # =======================================================================================================================
 # BaseStdIn
 # =======================================================================================================================
-class BaseStdIn:
+class BaseStdIn(_BaseClass):
 
     def __init__(self, original_stdin=sys.stdin, *args, **kwargs):
         try:
